@@ -1,5 +1,5 @@
 #include"display.h"
 
-void display::OnLoop(){
-    game->move();
+void display::OnLoop(SDL_Renderer* renderer){
+    game->move(renderer);
 }

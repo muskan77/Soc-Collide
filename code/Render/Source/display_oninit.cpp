@@ -12,12 +12,19 @@ bool display::OnInit(){
     }
 
     renderer = SDL_CreateRenderer(window,-1,0);
-
+    	
+    image = SDL_LoadBMP("test.bmp");
+    
+    	
+    texture = SDL_CreateTextureFromSurface(renderer, image);
+    SDL_RenderCopy(renderer, texture, NULL, NULL);
+    SDL_RenderPresent(renderer);
     if(renderer == NULL){
         return false;
     }
+   
 
-    game = new Game();
+    game = new Game(renderer);
 
     return true;
 }

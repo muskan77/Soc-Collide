@@ -16,7 +16,7 @@ int display::OnExecute() {
     while(running){
         
         OnEvent(&Event);
-        OnLoop();
+        OnLoop(renderer);
         OnRender();
         SDL_Delay(16);
     }

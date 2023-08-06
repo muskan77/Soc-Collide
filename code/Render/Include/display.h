@@ -8,10 +8,13 @@
 class display {
     private:
     bool running;
+    
     SDL_Window* window;
     SDL_Renderer* renderer;
+    SDL_Surface * image;
+    SDL_Texture * texture;
     Game* game;
-
+    bool gameEndScreen = false;
     public:
 
     display();
@@ -20,7 +23,7 @@ class display {
     bool OnInit();
   
     void OnEvent(SDL_Event* Event);
-    void OnLoop();
+    void OnLoop(SDL_Renderer* renderer);
     void OnRender();
     void OnCleanup();
  

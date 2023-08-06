@@ -6,17 +6,21 @@
 
 class Game{
     public:
-    Game();
-    void initialize();
-    void key_down(SDL_KeyboardEvent* event );
+    Game(SDL_Renderer* renderer);
+    void initialize(SDL_Renderer* renderer, int levelCounter);
+    void key_down(SDL_KeyboardEvent* event , SDL_Renderer* renderer );
     void key_up(SDL_KeyboardEvent* event );
-    void move();
-    void render(SDL_Renderer* renderer);
-    bool running;
-    bool gameover;
+    void move(SDL_Renderer* renderer);
+    void render(SDL_Renderer* renderer, bool &gameEndScreen);
+    void update();
+    void addPlayerBullet(double x, double y);
+   
 
     private:
     int timer;
     std::vector<Bodies*> listOfBodies;
+    bool running;
+    int gameLevel = 1;
+    int coinCounter = 0;
     
 };

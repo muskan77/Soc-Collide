@@ -9,7 +9,7 @@ void display::OnEvent(SDL_Event* event){
                 break;
 
             case SDL_KEYDOWN:  
-                game->key_down(&(event->key));
+                game->key_down(&(event->key), renderer);
                 break;
 
             case SDL_KEYUP:

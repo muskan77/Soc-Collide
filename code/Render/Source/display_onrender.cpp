@@ -1,29 +1,23 @@
 #include"display.h"
-
-
+#include<iostream>
 void display::OnRender(){
-    if(game->running == false)
-    {
+    
+   if (!gameEndScreen) {
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-    }
-    
-    else if(game->gameover == true)
-    {
-        SDL_SetRenderDrawColor(renderer, 0, 0, 200, 255);
-    }
-
-    else 
-    {
-        SDL_SetRenderDrawColor(renderer, 96, 128, 255, 255);
-    }
         SDL_RenderClear(renderer);
+        //SDL_RenderCopy(renderer, texture, NULL, NULL);
+        //SDL_RenderPresent(renderer);
+        game->render(renderer, gameEndScreen);
+        SDL_RenderPresent(renderer);        
+    }
 
-        
-        game->render(renderer);
+    else {
+        image = SDL_LoadBMP("endscreen.bmp");
+        texture = SDL_CreateTextureFromSurface(renderer, image);
+        SDL_RenderCopy(renderer, texture, NULL, NULL);
+        SDL_RenderPresent(renderer);            
+    }
 
-        
-        SDL_RenderPresent(renderer);
-    
+ 
 }
-
 
