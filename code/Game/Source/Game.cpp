@@ -44,6 +44,7 @@ void Game::initialize(SDL_Renderer* renderer, int levelCounter){
         movingBody->initialiseTextureAndImage(renderer);
         listOfBodies.push_back(movingBody);
 
+
         // Create bullets for this enemy player
         for (int j = 0; j < 4; j++) {
             Bodies *bullet = new Bodies(movingBody->GetX(), movingBody->GetY()+25, 5, 5, 6);// type 6 is enemybullet
@@ -187,17 +188,10 @@ void Game::initialize(SDL_Renderer* renderer, int levelCounter){
         listOfBodies.push_back(gameOver);
     }
         
-    else if (levelCounter == 5) {
-        gameLevel = 5;
 
-        Bodies *gameOver = new Bodies(WIDTH - 20, (HEIGHT/2) - 20, 20,20,3);
-        gameOver->SetColour(0,0,255);
-        gameOver->SetVel(0,0);
-        listOfBodies.push_back(gameOver);
-    }
     
     else {
-        gameLevel = 6;
+        gameLevel = 5;
         while(listOfBodies.size()) listOfBodies.pop_back();
     }
 }
@@ -480,7 +474,7 @@ void Game::render(SDL_Renderer* renderer, bool &gameEndScreen){
     if(running){
 
       
-        if (gameLevel == 6) {
+        if (gameLevel == 5) {
             gameEndScreen = true;
         }
         
