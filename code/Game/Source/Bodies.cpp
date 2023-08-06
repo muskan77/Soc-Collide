@@ -73,12 +73,6 @@ void Bodies::initialiseTextureAndImage(SDL_Renderer* renderer) {
     if (type == 0) {
         image = SDL_LoadBMP("playership.bmp");
     }
-    else if (type == 4) {
-        image = SDL_LoadBMP("pipe.bmp");
-    }
-    else if (type == 10) {
-        image = SDL_LoadBMP("debris.bmp");
-    }
     else {
         image = SDL_LoadBMP("enemyShip.bmp");
     }

@@ -19,29 +19,22 @@ void Game::initialize(SDL_Renderer* renderer, int levelCounter){
     while(listOfBodies.size()) listOfBodies.pop_back();
 
     //Add player
-    if (levelCounter != 4 && levelCounter !=5) {
-        Bodies* B = new Bodies(10,HEIGHT/2-10,20,20,0);
+
+        Bodies* B = new Bodies(10,10,20,20,0);
         B->SetColour(255,0,0);
         B->initialiseTextureAndImage(renderer);
         listOfBodies.push_back(B);
-    }
-    
-    else {
-        Bodies* B = new Bodies(10,HEIGHT/2-10,20,20,0);
-        B->SetColour(255,0,0);
-        B->initialiseTextureAndImage(renderer);
-        listOfBodies.push_back(B);   
-    }
+
+
 
  // Add one obstacle
     if (levelCounter == 1) { //type 1 is enemyship
         gameLevel = 1;
 
-        
-     Bodies *debris = new Bodies(WIDTH/2, 20, 20,20,10);
-        debris->SetColour(0,0,0);
+   
+    Bodies *debris = new Bodies(WIDTH/2, 5, 5, 5, 10);
+        debris->SetColour(128,128,128);
         debris->SetVel(0,0.25);
-        debris->initialiseTextureAndImage(renderer);
         listOfBodies.push_back(debris);
 
     for (int i = 0; 20 * i < WIDTH - 20; i += 4) {
@@ -108,7 +101,7 @@ void Game::initialize(SDL_Renderer* renderer, int levelCounter){
 
         // Create bullets for this enemy player
         for (int j = 0; j < 4; j++) {
-            Bodies *bullet = new Bodies(movingBody->GetX(), movingBody->GetY()+25, 5, 5, 6);// type 6 is enemybullet
+            Bodies *bullet = new Bodies(movingBody->GetX(), movingBody->GetY()+20, 5, 5, 6);// type 6 is enemybullet
             bullet->SetColour(0, 0, 255);  // Bullet color (blue)
             bullet->SetVel(-8, 0);  // Bullet velocity
             listOfBodies.push_back(bullet);
@@ -128,7 +121,14 @@ void Game::initialize(SDL_Renderer* renderer, int levelCounter){
 
         // Create bullets for this enemy player
         for (int j = 0; j < 4; j++) {
-            Bodies *bullet = new Bodies(movingBody->GetX(), movingBody->GetY()+25, 5, 5, 6);// type 6 is enemybullet
+            Bodies *bullet = new Bodies(movingBody->GetX(), movingBody->GetY()+10, 5, 5, 6);// type 6 is enemybullet
+            bullet->SetColour(0, 0, 255);  // Bullet color (blue)
+            bullet->SetVel(-8, 0);  // Bullet velocity
+            listOfBodies.push_back(bullet);
+        }
+
+        for (int j = 0; j < 4; j++) {
+            Bodies *bullet = new Bodies(movingBody->GetX(), movingBody->GetY()+30, 5, 5, 6);// type 6 is enemybullet
             bullet->SetColour(0, 0, 255);  // Bullet color (blue)
             bullet->SetVel(-8, 0);  // Bullet velocity
             listOfBodies.push_back(bullet);
@@ -144,11 +144,42 @@ void Game::initialize(SDL_Renderer* renderer, int levelCounter){
     else if (levelCounter == 4) {
         gameLevel = 4;
 
-       /* Bodies *debris = new Bodies(WIDTH - 20, (HEIGHT/2) - 20, 20,20,10);
+        Bodies *debris = new Bodies(WIDTH - 20, (HEIGHT/2) - 20, 20,20,10);
         debris->SetColour(0,0,255);
         debris->SetVel(0,0.25);
         debris->initialiseTextureAndImage(renderer);
-        listOfBodies.push_back(debris);*/
+        listOfBodies.push_back(debris);
+
+        for (int i = 0; 20 * i < WIDTH - 20; i += 4) {
+        Bodies *movingBody = new Bodies(WIDTH - 60, 20*i +40, 40, 40, 1);// moving body is enemy player
+        movingBody->SetColour(0, 255, 0);
+        movingBody->SetVel(-1, -1);
+        movingBody->initialiseTextureAndImage(renderer);
+        listOfBodies.push_back(movingBody);
+
+        // Create bullets for this enemy player
+        for (int j = 0; j < 4; j++) {
+            Bodies *bullet = new Bodies(movingBody->GetX(), movingBody->GetY()+10, 5, 5, 6);// type 6 is enemybullet
+            bullet->SetColour(0, 0, 255);  // Bullet color (blue)
+            bullet->SetVel(-8, 0);  // Bullet velocity
+            listOfBodies.push_back(bullet);
+        }
+        }
+        for (int i = 0; 20 * i < WIDTH - 20; i += 4) {
+        Bodies *movingBody = new Bodies(WIDTH - 240, 20 * i+20, 40, 40, 1);// moving body is enemy player
+        movingBody->SetColour(0, 255, 0);
+        movingBody->SetVel(-1, -1);
+        movingBody->initialiseTextureAndImage(renderer);
+        listOfBodies.push_back(movingBody);
+
+        // Create bullets for this enemy player
+        for (int j = 0; j < 4; j++) {
+            Bodies *bullet = new Bodies(movingBody->GetX(), movingBody->GetY()+20, 5, 5, 6);// type 6 is enemybullet
+            bullet->SetColour(0, 0, 255);  // Bullet color (blue)
+            bullet->SetVel(-8, 0);  // Bullet velocity
+            listOfBodies.push_back(bullet);
+        }
+    }
 
         Bodies *gameOver = new Bodies(WIDTH - 20, (HEIGHT/2) - 20, 20,20,3);
         gameOver->SetColour(0,0,255);
@@ -268,39 +299,14 @@ void Game::move(SDL_Renderer* renderer){
                         
                     }
 
-                
-              /* if (listOfBodies[i]->giveType() == 5) { // Check if it's a player bullet
-                    if(gameLevel == 3){
-                        for (long unsigned int j = 1; j < listOfBodies.size(); j++) { // Skip the player's body (index 0)
-                            if (listOfBodies[j]->giveType() != 5 && listOfBodies[j]->check_col(listOfBodies[i])) {
-                                listOfBodies[i]->hitCount++; // Increment hit count for the enemy hit by the bullet
-                                if (listOfBodies[i]->hitCount >= 3) { // Check if hit count reaches 3
-                                // Remove the hit enemy body and its bullets, and free memory
-                                    if (listOfBodies[j]->giveType() == 6) { // If enemy bullet
-                                        delete listOfBodies[j];
-                                        listOfBodies.erase(listOfBodies.begin() + j);
-                                        j--; // Decrement j to account for the erased element
-                                    } else{ // If enemy body
-                                        delete listOfBodies[i];
-                                        delete listOfBodies[j];
-                                        listOfBodies.erase(listOfBodies.begin() + i);
-                                        listOfBodies.erase(listOfBodies.begin() + j - (j > i)); // Adjust index if j > i
-                                        i--; // Decrement i to account for the erased elements
-                                        j--; // Decrement j to account for the erased elements
-                                    }
-                                    break; // Exit the inner loop since the bodies were removed
-                                }
-                            }
-                        }
-                    }
-                }
+
 
             // Update enemy bullet movement when the enemy is alive
             if (listOfBodies[i]->giveType() == 6 && listOfBodies[0]->check_col(listOfBodies[i])) {
                if (listOfBodies[0]->giveType() != 3) {
                    listOfBodies[i]->move();
                }
-           }*/
+           }
 
 
             if (listOfBodies[i]->giveType() != 3) {
@@ -315,12 +321,12 @@ void Game::move(SDL_Renderer* renderer){
                         if (listOfBodies[i]->giveType() == 6){
                             listOfBodies[i]->resetPos();
                         }
-                        listOfBodies[i]->vel_x = 5;
+                        listOfBodies[i]->vel_x = -5;
                     }
                     if (listOfBodies[i]->y + listOfBodies[i]->vel_y <0) {
                         listOfBodies[i]->vel_y = 5;
                         if (listOfBodies[i]->giveType() == 6){
-                            listOfBodies[i]->vel_y = 8;
+                            listOfBodies[i]->vel_y = -8;
                         }
                     }
                     else if (listOfBodies[i]->y + listOfBodies[i]->heightOfBody() + listOfBodies[i]->vel_y >HEIGHT) {
@@ -370,7 +376,7 @@ void Game::move(SDL_Renderer* renderer){
         for(long unsigned int i=1; i<listOfBodies.size();i++){
             if(listOfBodies[0]->check_col(listOfBodies[i]))
             {
-                if (listOfBodies[i]->giveType() == 1 || listOfBodies[i]->giveType() == 4 || listOfBodies[i]->giveType() == 5 || listOfBodies[i]->giveType() == 6) {
+                if (listOfBodies[i]->giveType() == 1 || listOfBodies[i]->giveType() == 4 || listOfBodies[i]->giveType() == 5 || listOfBodies[i]->giveType() == 6 || listOfBodies[i]->giveType() == 10) {
                     while (listOfBodies.size()) {
                         listOfBodies.pop_back();
                     }
@@ -403,14 +409,6 @@ void Game::move(SDL_Renderer* renderer){
                             break;                             
                         }
                     }
-                }
-                else if (listOfBodies[i]->giveType() == 10) {
-                    while (listOfBodies.size()) {
-                        listOfBodies.pop_back();
-                    }
-                    running = false;
-                    timer = RESET_TIME + 1;
-                    break;
                 }
                 else if (listOfBodies[i]->giveType() == 8) {
                     if (listOfBodies[i]->giveColorGreen() == 215) {
@@ -510,115 +508,3 @@ void Game::render(SDL_Renderer* renderer, bool &gameEndScreen){
         }
     }
 }
-
-/*
-        Bodies *movingReflector1 = new Bodies(WIDTH-60,HEIGHT/2-60,60,30,2);
-        movingReflector1->SetColour(255,255,255);
-        movingReflector1->SetVel(-5,0);
-        listOfBodies.push_back(movingReflector1);
-
-        Bodies *movingReflector2 = new Bodies(WIDTH-60,HEIGHT/2+30,60,30,2);
-        movingReflector2->SetColour(255,255,255);
-        movingReflector2->SetVel(-5,0);
-        listOfBodies.push_back(movingReflector2);
-
-        Bodies *gameOver = new Bodies(WIDTH - 20, HEIGHT - 20, 20,20,3);
-        gameOver->SetColour(0,0,255);
-        gameOver->SetVel(0,0);
-        listOfBodies.push_back(gameOver);
-
-            // Move bullets and remove bullets that reach the boundaries
-      for (long unsigned int i = 1; i < listOfBodies.size(); i++) {
-            if (listOfBodies[i]->giveType() == 5) { // Check if it's a player bullet
-                listOfBodies[i]->move();
-                
-                // Check if the bullet reaches the boundaries
-                if (listOfBodies[i]->x < 0 || listOfBodies[i]->x > WIDTH ||
-                    listOfBodies[i]->y < 0 || listOfBodies[i]->y > HEIGHT) {
-                    // Remove the bullet from the list
-                    delete listOfBodies[i];
-                    listOfBodies.erase(listOfBodies.begin() + i);
-                    i--; // Decrement i to account for the erased element
-                }
-            } else {
-                // Move other bodies
-                listOfBodies[i]->move();
-            }
-        }
-
-                // Update player's firing position
-        if (isfiring) {
-            listOfBodies[0]->SetPrevX(listOfBodies[0]->GetX());
-            listOfBodies[0]->SetPrevY(listOfBodies[0]->GetY());
-        }
-
-
-        for (long unsigned int i = 1; i < listOfBodies.size(); i++) {
-            if (listOfBodies[i]->giveType() == 5 && listOfBodies[0]->check_col(listOfBodies[i])) {
-                listOfBodies.erase(listOfBodies.begin() + i);
-                break; // Exit the loop since the bullet was removed
-            }
-        }
-        //check for collision
-        for(long unsigned int i=1; i<listOfBodies.size();i++){
-
-            if (listOfBodies[i]->giveType() == 5) { // Check if it's a player bullet
-                listOfBodies[i]->move();
-                
-                // Check if the bullet collides with the boundaries
-                if (listOfBodies[i]->x < 0 || listOfBodies[i]->x > WIDTH ||
-                    listOfBodies[i]->y < 0 || listOfBodies[i]->y > HEIGHT) {
-                    // Remove the bullet from the list and free memory
-                    delete listOfBodies[i];
-                    listOfBodies.erase(listOfBodies.begin() + i);
-                    i--; // Decrement i to account for the erased element
-                }
-            } else {
-                // Move other bodies
-                listOfBodies[i]->move();
-            }
-        }*/
-
-        
-        /*for (int i=0; i*20<WIDTH - 20; i+=4) {
-            Bodies *spawner = new Bodies (i*20, 0, 20, 50, 5);
-            spawner->SetColour(255,0,255);
-            spawner->SetVel(0,0);
-            listOfBodies.push_back(spawner);
-        }
-
-        for (int i=0; i*20<WIDTH - 20; i+=4){
-            Bodies *spawned = new Bodies (i*20,50,20,20,6);
-            spawned->SetColour(0,255,0);
-            spawned->SetVel(0,8);
-            listOfBodies.push_back(spawned);
-        }*/
-
-        
-         //check for collision
-        /*for(long unsigned int i=1; i<listOfBodies.size();i++){
-
-            if (listOfBodies[i]->giveType() == 5) { // Check if it's a player bullet
-                listOfBodies[i]->move();
-                
-                // Check if the bullet collides with the boundaries
-                if (listOfBodies[i]->x < 0 || listOfBodies[i]->x > WIDTH ||
-                    listOfBodies[i]->y < 0 || listOfBodies[i]->y > HEIGHT) {
-                    // Remove the bullet from the list and free memory
-                    delete listOfBodies[i];
-                    listOfBodies.erase(listOfBodies.begin() + i);
-                    i--; // Decrement i to account for the erased element
-                }
-            } else {
-                // Move other bodies
-                listOfBodies[i]->move();
-            }
-        }*/
-        
-        /*void Game::update() {
-    // Create player bullets when firing
-    if (isfiring && running) {
-        addPlayerBullet(listOfBodies[0]->GetX() + listOfBodies[0]->widthOfBody(), listOfBodies[0]->GetY() + listOfBodies[0]->heightOfBody() / 2);
-    }
-
-}*/

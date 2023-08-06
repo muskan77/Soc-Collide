@@ -13,7 +13,7 @@ bool display::OnInit(){
 
     renderer = SDL_CreateRenderer(window,-1,0);
     	
-    image = SDL_LoadBMP("test.bmp");
+    image = SDL_LoadBMP("Welcomescreen.bmp");
     
     	
     texture = SDL_CreateTextureFromSurface(renderer, image);

@@ -12,7 +12,7 @@ void display::OnRender(){
     }
 
     else {
-        image = SDL_LoadBMP("endscreen.bmp");
+        image = SDL_LoadBMP("win.bmp");
         texture = SDL_CreateTextureFromSurface(renderer, image);
         SDL_RenderCopy(renderer, texture, NULL, NULL);
         SDL_RenderPresent(renderer);            
